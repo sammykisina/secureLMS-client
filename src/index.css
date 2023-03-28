@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* font */
+@font-face {
+  font-family: 'Nunito';
+  src: url('./assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf');
+  font-family: 500;
+}
+
+@layer base {
+  * {
+    @apply font-nunito;
+  }
+
+  body {
+    @apply bg-primary text-textColor;
+  }
+
+  /* modifying the scroll bar */
+  ::-webkit-scrollbar {
+    width: 16px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #edf2f7;
+  }
+
+  /* handle */
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 100vh;
+    border: 3px solid #edf2f7;
+  }
+
+  /* handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+}
+
+:root {
+  --transition-cubic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@layer components {
+  .input {
+    @apply h-10 w-full border-b-2 border-secondary bg-transparent placeholder-transparent scrollbar-hide focus:border-secondary focus:outline-none;
+  }
+
+  .inputLabel {
+    @apply absolute left-0 -top-3.5 text-textColor transition-all peer-placeholder-shown:top-0 peer-placeholder-shown:text-base peer-placeholder-shown:text-textColor/50 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-textColor/50;
+  }
+
+  .error {
+    @apply text-xs font-semibold lowercase text-red-500;
+  }
+
+  .icon {
+    @apply h-6 w-6;
+  }
+
+  /* dropdown */
+  .dropdownContent {
+    @apply absolute top-[calc(100%+5px)] right-0 overflow-hidden rounded-xl  bg-primary px-[2px] py-[10px] shadow z-40;
+  }
+  .dropdownContent {
+    transform-origin: top right;
+    transform: scale(0);
+    transition: transform 0.3s ease 0s;
+  }
+  .dropdownContent.active {
+    transform: scale(1);
+    transition: transform 0.5s var(--transition-cubic);
+  }
+
+  /* widget */
+  .widgetWrapper {
+    @apply invisible fixed top-0 -right-full  z-50 grid h-full  w-full  transform place-items-end bg-[#00000080] pt-4 transition-all duration-300 ease-in;
+  }
+
+  .widgetWrapper.show {
+    @apply visible right-0 z-50;
+  }
+
+  .widget {
+    @apply relative h-fit max-w-[500px] overflow-clip rounded-tl-[2rem] bg-primary;
+  }
+
+  /* modal */
+  .modalWrapper {
+    @apply invisible fixed top-0 left-0 z-50  grid h-full w-full  scale-[0] transform place-items-center bg-[#00000080] pt-8 transition-all duration-300 ease-in;
+  }
+
+  .modalWrapper.show {
+    @apply visible z-50 scale-[1];
+  }
+
+  .modal {
+    @apply relative h-fit max-w-[400px] overflow-clip rounded-3xl bg-primary;
+  }
+
+  /* conversations */
+  /* .currentMessage {
+    @apply text-sm text-gray-400;
+  } */
+
+  .senderMessageContainer {
+    @apply ml-[auto]  md:ml-[2rem];
+  }
+
+  .receiverMessageContainer {
+    @apply mr-[auto] md:mr-[2rem];
+  }
+
+  .receiverMessageBody {
+    @apply rounded-[2rem] rounded-bl-none rounded-tl-[1.7rem] py-2 pl-4 pr-2;
+  }
+
+  .senderMessageBody {
+    @apply rounded-[2rem]  rounded-br-none rounded-tr-[1.7rem] py-2 pl-4 pr-2;
+  }
+}
