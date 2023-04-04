@@ -13,12 +13,13 @@ import {
 import { useAuth } from '@/hooks';
 import { Login } from '@/pages';
 import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Layout = () => {
   /**
    * component states
    */
-  const { token } = useAuth();
+  const auth = useAuth();
 
   const { isSidebarOpenState, showSidebarState } = appAtoms;
   const showSidebar = useRecoilValue(showSidebarState);
@@ -31,8 +32,39 @@ const Layout = () => {
   const showTakeTaskModal = useRecoilValue(showTakeTaskModalState);
   const { pathname } = useLocation();
 
+  /**
+   * component functions
+   */
+
+  //update expire time on any user activity
+  useEffect(() => {
+    auth.updateExpiredTime();
+
+    window.addEventListener('click', auth.updateExpiredTime);
+    window.addEventListener('keypress', auth.updateExpiredTime);
+    window.addEventListener('scroll', auth.updateExpiredTime);
+    window.addEventListener('mousemove', auth.updateExpiredTime);
+
+    // clean up
+    return () => {
+      window.removeEventListener('click', auth.updateExpiredTime);
+      window.removeEventListener('keypress', auth.updateExpiredTime);
+      window.removeEventListener('scroll', auth.updateExpiredTime);
+      window.removeEventListener('mousemove', auth.updateExpiredTime);
+    };
+  }, []);
+
+  //set interval to check for inactivity
+  useEffect(() => {
+    const interval = setInterval(() => {
+      auth.checkForInactivity();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   if (
-    !token &&
+    !auth.token &&
     !(
       pathname === '/auth/verify-two-factory-code' ||
       pathname === '/email' ||
@@ -41,25 +73,26 @@ const Layout = () => {
   )
     return <Login />;
 
-  /**
-   * component functions
-   */
   return (
     <section className='relative mx-auto flex w-full max-w-[1200px] sm:px-[20px]'>
       <Toaster />
 
       {/* sidebar */}
       <div
-        className={`absolute duration-300 sm:left-0 ${!token && 'hidden'}  ${
-          showSidebar ? 'left-0' : '-left-[100%]'
-        }`}
+        className={`absolute duration-300 sm:left-0 ${
+          !auth.token && 'hidden'
+        }  ${showSidebar ? 'left-0' : '-left-[100%]'}`}
       >
         <Sidebar />
       </div>
 
       <div
         className={`h-screen max-w-[1200px] flex-1 overflow-x-scroll p-2 duration-300 scrollbar-hide ${
-          isSidebarOpen && token ? 'sm:ml-[200px]' : !token ? '' : 'sm:ml-24'
+          isSidebarOpen && auth.token
+            ? 'sm:ml-[200px]'
+            : !auth.token
+            ? ''
+            : 'sm:ml-24'
         }   `}
       >
         <TopHeader />

@@ -165,6 +165,21 @@ const useAuth = () => {
     },
   });
 
+  // check for inactivity and logout
+  const checkForInactivity = () => {
+    const expireTime = localStorage.getItem('expireTime');
+
+    if (parseInt(expireTime!) < Date.now()) {
+      logout();
+    }
+  };
+
+  // update expired time
+  const updateExpiredTime = () => {
+    const expireTime = Date.now() + 5000;
+    localStorage.setItem('expireTime', JSON.stringify(expireTime));
+  };
+
   return {
     user,
     token,
@@ -183,6 +198,8 @@ const useAuth = () => {
     isSendingEmailVerificationCode,
     revokeLoginsMutateAsync,
     isRevokingLogins,
+    checkForInactivity,
+    updateExpiredTime,
   };
 };
 
