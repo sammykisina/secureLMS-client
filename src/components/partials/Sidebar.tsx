@@ -70,7 +70,7 @@ const Sidebar = () => {
               route={route}
               type='medium'
               fullWidth={true}
-              active={pathname === route.to && 'navLinkActive'}
+              active={pathname === route?.to && true}
               moreActions={() => setShowSidebar(false)}
             />
           ))}

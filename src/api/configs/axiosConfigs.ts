@@ -11,7 +11,7 @@ export const api = axios.create({
     Accept: 'application/json',
     Authorization: `Bearer ` + token,
   },
-  baseURL: 'http://127.0.0.1:8000/api/v1',
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
 });
 
 // defining a custom error handler for all APIs
@@ -20,6 +20,12 @@ const errorHandler = (error: any) => {
 
   // logging only errors that are not 401
   if (statusCode && statusCode !== 401) {
+    Toasts.errorToast(error.response.data.message);
+    console.log(error);
+  } else {
+    Cookies.remove('token');
+    Cookies.remove('user');
+
     Toasts.errorToast(error.response.data.message);
     console.log(error);
   }

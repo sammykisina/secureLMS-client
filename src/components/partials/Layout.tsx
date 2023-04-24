@@ -58,7 +58,7 @@ const Layout = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       auth.checkForInactivity();
-    }, 3000);
+    }, 1800000);
 
     return () => clearInterval(interval);
   }, []);

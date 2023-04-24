@@ -20,7 +20,7 @@ const navlinkStyles = cva(
         false: 'w-fit',
       },
       active: {
-        navLinkActive: 'bg-secondary w-full text-textColor',
+        true: 'bg-secondary w-full text-textColor',
         activeLink:
           'text-white text-lg bg-orange px-2 py-2 flex justify-center',
       },

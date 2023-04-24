@@ -56,7 +56,7 @@ const Tab: FC<TabProps> = ({
             />
           ) : (
             <div className={`duration-300 `} key={singleTabsDataIndex}>
-              <button
+              {/* <button
                 className={`duration-300 ${
                   singleTabsDataIndex === index &&
                   'border-callToAction text-white'
@@ -64,7 +64,7 @@ const Tab: FC<TabProps> = ({
                 onClick={() => setIndex(singleTabsDataIndex)}
               >
                 {singleTabsData.label}
-              </button>
+              </button> */}
 
               {/* <div
                 className={`h-[5px] w-[30px] rounded-full  duration-300 ${

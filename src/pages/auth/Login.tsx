@@ -16,7 +16,7 @@ import { LoginData } from '../../types/typings.t';
 import { Toaster } from 'react-hot-toast';
 import { appUtils } from '@/utils';
 import { useState } from 'react';
-import { HiOutlineArrowPath } from 'react-icons/hi2';
+import { HiEye, HiEyeSlash, HiOutlineArrowPath } from 'react-icons/hi2';
 
 const Login = () => {
   /**
@@ -31,6 +31,7 @@ const Login = () => {
   const [generatedCapture, setGeneratedCaptcha] = useState(
     appUtils.generateCaptcha()
   );
+  const [showPassword, setShowPassword] = useState(false);
 
   /**
    * page functions
@@ -89,24 +90,37 @@ const Login = () => {
                 )}
               </div>
 
-              <div className='relative'>
-                <input
-                  type='password'
-                  {...register('password', {
-                    required: 'Enter your password.',
-                  })}
-                  className='input peer'
-                  placeholder='Password'
-                />
-                <label className='inputLabel'>Password</label>
-
-                {errors['password'] && (
-                  <ErrorMessage
-                    errors={errors}
-                    name='password'
-                    render={({ message }) => <Error errorMessage={message} />}
+              <div className='flex items-center gap-2'>
+                <div className='relative flex-1'>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    {...register('password', {
+                      required: 'Enter your password.',
+                    })}
+                    className='input peer'
+                    placeholder='Password'
                   />
-                )}
+                  <label className='inputLabel'>Password</label>
+
+                  {errors['password'] && (
+                    <ErrorMessage
+                      errors={errors}
+                      name='password'
+                      render={({ message }) => <Error errorMessage={message} />}
+                    />
+                  )}
+                </div>
+
+                <Icon
+                  purpose={() => setShowPassword((prev) => !prev)}
+                  icon={
+                    showPassword ? (
+                      <HiEyeSlash className='text-textColor' />
+                    ) : (
+                      <HiEye className='text-textColor' />
+                    )
+                  }
+                />
               </div>
             </div>
 
